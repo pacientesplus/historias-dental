@@ -1,0 +1,28 @@
+{
+  "_nota": "Panel de control. Los tokens NO van aca, van en Settings > Secrets del repositorio.",
+
+  "min_por_dia": 1,
+  "max_por_dia": 3,
+  "dias_de_descanso": 21,
+
+  "cuentas": [
+    {
+      "usuario": "dentalciudad1",
+      "ig_user_id": "17841463863060415",
+      "token_secret": "IG_TOKEN_DENTALCIUDAD1",
+      "activa": true
+    },
+    {
+      "usuario": "dentalciudad",
+      "ig_user_id": "17841419529166454",
+      "token_secret": "IG_TOKEN_DENTALCIUDAD",
+      "activa": false
+    },
+    {
+      "usuario": "dentalmicrocentro",
+      "ig_user_id": "17841472086607292",
+      "token_secret": "IG_TOKEN_DENTALMICROCENTRO",
+      "activa": false
+    }
+  ]
+}
