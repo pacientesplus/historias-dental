@@ -1,0 +1,57 @@
+name: Publicar historias
+
+on:
+  schedule:
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar-historias
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: pip install --quiet requests
+
+      - name: Asegurar la Release donde van los clips
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release view clips || gh release create clips --title "Clips" --notes "Clips temporales que Instagram descarga. Se reemplazan solos."
+
+      - name: Publicar
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IG_TOKEN_DENTALCIUDAD1: ${{ secrets.IG_TOKEN_DENTALCIUDAD1 }}
+          IG_TOKEN_DENTALCIUDAD: ${{ secrets.IG_TOKEN_DENTALCIUDAD }}
+          IG_TOKEN_DENTALMICROCENTRO: ${{ secrets.IG_TOKEN_DENTALMICROCENTRO }}
+        run: python publicar.py
+
+      - name: Guardar el historial
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain historial.json)" ]; then
+            git config user.name "Publicador de historias"
+            git config user.email "actions@github.com"
+            git add historial.json
+            git commit -m "Historias publicadas"
+            git push
+          else
+            echo "Sin cambios en el historial."
+          fi
