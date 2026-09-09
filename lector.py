@@ -8,15 +8,10 @@ Sabemos que escribir funciona. Leer, por el camino que veniamos usando,
 devuelve vacio. Este programa prueba todas las puertas conocidas, una por
 una, y dice cual se abre.
 
-Prueba dos llaves distintas:
+Prueba tres llaves distintas:
   - El token de Instagram (app con login de Instagram).
+  - Los mensajes privados, que son otro tipo de dato.
   - El token de la pagina de Facebook (la otra app, otro camino).
-
-Y varias formas de preguntar:
-  - La lista de comentarios directa.
-  - El contador de comentarios (a veces el numero se ve aunque la lista no).
-  - Los comentarios pedidos como campo anidado dentro de la publicacion.
-  - Un comentario puntual pedido por su identificador.
 
 No publica ni modifica nada. Solo lee.
 """
@@ -85,7 +80,11 @@ def por_instagram(cuenta, token):
 
     medio = None
     if d and d.get("data"):
-        medio = d["data"][0]["id"]
+        # Buscamos una publicacion que SI tenga comentarios.
+        con = [m for m in d["data"] if m.get("comments_count")]
+        medio = (con[0] if con else d["data"][0])["id"]
+        if con:
+            print(f"      -> uso la que tiene {con[0]['comments_count']} comentarios")
 
     if not medio:
         print("   (sin publicaciones, no se puede seguir por esta llave)")
@@ -108,6 +107,28 @@ def por_instagram(cuenta, token):
     probar("E. Respuestas de ese comentario",
            "GET", f"{IGGRAPH}/{COMENTARIO_CONOCIDO}/replies",
            {"fields": "id,text,username", "access_token": token})
+
+
+def por_mensajes(cuenta, token):
+    """Los mensajes privados son otro tipo de dato. Puede que si se lean."""
+    titulo(f"LLAVE 3: mensajes privados  (@{cuenta['usuario']})")
+
+    d = probar("K. Lista de conversaciones",
+               "GET", f"{IGGRAPH}/{cuenta['ig_user_id']}/conversations",
+               {"fields": "id,updated_time", "limit": 5,
+                "access_token": token})
+
+    conv = None
+    if d and d.get("data"):
+        conv = d["data"][0]["id"]
+
+    if conv:
+        probar("L. Mensajes de la primera conversacion",
+               "GET", f"{IGGRAPH}/{conv}",
+               {"fields": "id,messages{id,created_time,from,message}",
+                "access_token": token})
+    else:
+        print("   (no hay conversaciones que leer, o no las devuelve)")
 
 
 def por_pagina(pagina, token):
@@ -152,7 +173,7 @@ def por_pagina(pagina, token):
 
 def main():
     print("== El lector ==")
-    print("Prueba todas las formas conocidas de leer comentarios.")
+    print("Prueba todas las formas conocidas de leer comentarios y mensajes.")
     print("No publica ni modifica nada.")
 
     with open(RAIZ / "bot.json", encoding="utf-8") as f:
@@ -165,6 +186,7 @@ def main():
     ig = os.environ.get(cuenta["token_secret"], "").strip()
     if ig:
         por_instagram(cuenta, ig)
+        por_mensajes(cuenta, ig)
     else:
         print(f"   Falta el secret {cuenta['token_secret']}")
 
@@ -182,7 +204,7 @@ def main():
         print(f"   {marca}  {nombre}")
     print()
     print("Lo que importa no es que diga RESPONDE, sino si adentro de la")
-    print("respuesta viene texto de comentarios o viene vacio.")
+    print("respuesta viene texto o viene vacio.")
     return 0
 
 
