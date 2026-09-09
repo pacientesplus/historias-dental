@@ -131,7 +131,7 @@ def listar_drive(carpeta_id, api_key):
         if not token:
             break
 
-    utiles = []
+    utiles, vistos, repetidos = [], set(), 0
     for f in items:
         tipo = f.get("mimeType", "")
         if not (tipo.startswith("video/") or tipo.startswith("image/")):
@@ -140,8 +140,20 @@ def listar_drive(carpeta_id, api_key):
         if mb > ORIGEN_MAX_MB:
             print(f"   (salteo {f['name']}: {mb:.0f} MB, demasiado grande)")
             continue
+
+        # Mismo nombre y mismo peso = es el mismo archivo subido dos veces.
+        # Nos quedamos con uno solo, asi no tiene doble chance de salir.
+        huella = (f["name"].lower(), f.get("size"))
+        if huella in vistos:
+            repetidos += 1
+            continue
+        vistos.add(huella)
+
         f["es_video"] = tipo.startswith("video/")
         utiles.append(f)
+
+    if repetidos:
+        print(f"   ({repetidos} repetidos ignorados)")
     return utiles
 
 
