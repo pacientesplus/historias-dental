@@ -1,0 +1,28 @@
+name: Diagnostico de comentarios
+
+# Solo a mano. No tiene horario. Sirve para averiguar que nos deja hacer
+# Meta con los comentarios: leer, escribir, responder.
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: pip install --quiet requests
+
+      - name: Diagnosticar
+        env:
+          PYTHONUNBUFFERED: "1"
+          IG_TOKEN_DENTALCIUDAD1: ${{ secrets.IG_TOKEN_DENTALCIUDAD1 }}
+          FB_TOKEN_DENTALCIUDAD1: ${{ secrets.FB_TOKEN_DENTALCIUDAD1 }}
+        run: python diagnostico.py
