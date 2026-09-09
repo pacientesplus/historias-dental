@@ -1,0 +1,115 @@
+{
+  "_nota": "Panel de control del bot de comentarios. Las claves NO van aca, van en Settings > Secrets. Mientras 'modo_prueba' este en true, el bot NO publica nada: solo escribe en el registro lo que contestaria.",
+  "modo_prueba": true,
+  "responder_privado": false,
+  "horas_para_atras": 24,
+  "publicaciones_a_revisar": 12,
+  "max_respuestas_por_corrida": 15,
+  "whatsapp": {
+    "microcentro": "https://wa.me/5491124577716",
+    "once": "https://wa.me/5491161460061"
+  },
+  "pistas_de_sede": {
+    "once": [
+      "once",
+      "miserere",
+      "balvanera",
+      "pueyrredon",
+      "abasto"
+    ],
+    "microcentro": [
+      "microcentro",
+      "centro",
+      "pacifico",
+      "florida",
+      "obelisco",
+      "retiro",
+      "catalinas"
+    ]
+  },
+  "no_responder_si_dice": [
+    "estafa",
+    "estafador",
+    "ladron",
+    "ladrones",
+    "robo",
+    "roban",
+    "chorro",
+    "denuncia",
+    "denunciar",
+    "abogado",
+    "demanda",
+    "juicio",
+    "fiscal",
+    "pesimo",
+    "pesima",
+    "horrible",
+    "asco",
+    "malisimo",
+    "desastre",
+    "no vayan",
+    "no ir",
+    "cuidado con",
+    "maltrato",
+    "mala praxis",
+    "me arruinaron",
+    "me dejaron",
+    "reclamo",
+    "estoy esperando hace"
+  ],
+  "guion": {
+    "quienes_somos": "Dental Ciudad es una clinica odontologica con dos sedes en la Ciudad de Buenos Aires: una en Microcentro (cerca de Galerias Pacifico) y otra en el barrio de Once (cerca de Plaza Miserere). Mas de 8 anios en la Capital, mas del 98% de resenias positivas en Google Maps. Equipo de odontologos, incluido cirujano maxilofacial, y especialistas en tratamientos esteticos y medicos.",
+    "que_hacemos": "Diseno de sonrisa. Carillas de resina, de ceramica y de zirconio. Implantes dentales. Protesis dental flexible, completa o parcial. Extraccion de terceros molares (muelas de juicio). Blanqueamiento. Ortodoncia. Endodoncia. Odontologia estetica en general. Contamos con radiovisiografo y escaner intraoral 3D Fussen CAD-CAM, que toma moldes digitales en vez de las masillas de siempre: el laboratorio recibe un modelo casi exacto y los trabajos vuelven con mejor calidad y precision.",
+    "lo_practico": "La primera consulta es sin cargo. Se agenda por WhatsApp o escribiendo al mensaje directo contando que tratamiento interesa. Los turnos se organizan pensando en gente ocupada, para no perder seis tardes en el consultorio.",
+    "reglas": [
+      "Nunca des un precio, ni un rango, ni digas 'desde tanto'. Cada caso es distinto y hay que verlo. Si preguntan cuanto sale: deci que depende del caso, que la primera consulta es sin cargo, y pasa el WhatsApp para que le pasen el presupuesto.",
+      "Nunca diagnostiques ni opines sobre el caso puntual de la persona. No digas si le sirve un implante, una carilla o una extraccion. Eso lo define el odontologo viendo la boca.",
+      "Nunca prometas resultados, ni cantidad de sesiones, ni tiempos de tratamiento.",
+      "No inventes nada que no este escrito aca arriba. Si no sabes algo, deriva al WhatsApp.",
+      "No hables de otras clinicas ni compares.",
+      "Nunca digas que sos un bot, una IA, ni un asistente automatico. Tampoco digas que sos el odontologo. Escribi como escribe alguien del equipo que atiende las redes.",
+      "Si el comentario es una queja, un reclamo, un insulto o algo que suena a problema con un tratamiento: NO respondas. Marcalo para que lo vea una persona.",
+      "Si el comentario no pregunta nada (un emoji suelto, un 'lindo', una arroba a un amigo): NO respondas. No hace falta contestar todo."
+    ],
+    "tono": "Argentino, de vos. Corto: una o dos frases, treinta palabras como mucho. Calido pero sin exagerar, sin signos de exclamacion de mas, sin emojis salvo que quede muy natural uno solo. Nada de formulas de call center como 'estimado' o 'quedamos a su disposicion'. Variado: no arranques siempre igual ni cierres siempre con la misma frase.",
+    "objetivo": "Que la persona escriba al WhatsApp. Orienta por encima, responde lo que se pueda con la informacion de arriba, y pasa el link. El link va tal cual, sin acortar ni adornar."
+  },
+  "cuentas": [
+    {
+      "usuario": "dentalciudad1",
+      "ig_user_id": "17841463863060415",
+      "token_secret": "IG_TOKEN_DENTALCIUDAD1",
+      "activa": true,
+      "sede_por_defecto": "microcentro",
+      "pagina_fb": {
+        "nombre": "Dental Ciudad 1",
+        "page_id": "424019744120344",
+        "token_secret": "FB_TOKEN_DENTALCIUDAD1"
+      }
+    },
+    {
+      "usuario": "dentalciudad",
+      "ig_user_id": "17841419529166454",
+      "token_secret": "IG_TOKEN_DENTALCIUDAD",
+      "activa": true,
+      "sede_por_defecto": "once",
+      "pagina_fb": {
+        "nombre": "Dental Ciudad",
+        "page_id": "105450654210782",
+        "token_secret": "FB_TOKEN_DENTALCIUDAD"
+      }
+    },
+    {
+      "usuario": "dentalmicrocentro",
+      "ig_user_id": "17841472086607292",
+      "token_secret": "IG_TOKEN_DENTALMICROCENTRO",
+      "activa": true,
+      "sede_por_defecto": "microcentro",
+      "pagina_fb": {
+        "nombre": "Dental Microcentro",
+        "page_id": "646412561880316",
+        "token_secret": "FB_TOKEN_DENTALMICROCENTRO"
+      }
+    }
+  ]
+}
