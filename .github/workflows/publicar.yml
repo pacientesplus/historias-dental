@@ -28,16 +28,17 @@ jobs:
           python-version: "3.11"
 
       - name: Instalar dependencias
-        run: pip install --quiet requests
+        run: pip install --quiet requests pillow pillow-heif
 
       - name: Asegurar la Release donde van los clips
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release view clips || gh release create clips --title "Clips" --notes "Clips temporales que Instagram descarga. Se reemplazan solos."
+        run: gh release view clips || gh release create clips --title "Clips" --notes "Archivos temporales que Instagram descarga. Se reemplazan solos."
 
       - name: Publicar
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           IG_TOKEN_DENTALCIUDAD1: ${{ secrets.IG_TOKEN_DENTALCIUDAD1 }}
           IG_TOKEN_DENTALCIUDAD: ${{ secrets.IG_TOKEN_DENTALCIUDAD }}
           IG_TOKEN_DENTALMICROCENTRO: ${{ secrets.IG_TOKEN_DENTALMICROCENTRO }}
