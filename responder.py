@@ -9,7 +9,7 @@ Corre cada tanto desde GitHub Actions:
   2. Junta los comentarios nuevos (los de las ultimas horas, que no
      sean nuestros y que no hayamos contestado antes).
   3. Le pide a Gemini que decida si vale la pena contestar y, si si,
-     que redacte la respuesta siguiendo el guion de bot.json.
+     que redacte la respuesta siguiendo el guion de instrucciones.txt.
   4. Publica la respuesta abajo del comentario y, si esta habilitado,
      manda tambien el mensaje privado a esa misma persona.
   5. Anota lo hecho para no contestar dos veces.
@@ -33,6 +33,7 @@ import requests
 
 RAIZ = Path(__file__).parent
 ARCHIVO_CONFIG = RAIZ / "bot.json"
+ARCHIVO_GUION = RAIZ / "instrucciones.txt"
 ARCHIVO_ESTADO = RAIZ / "respondidos.json"
 
 IGGRAPH = "https://graph.instagram.com/v23.0"
@@ -154,6 +155,7 @@ def comentarios_instagram(cuenta, cuantas, horas, propios):
     medios = pedir(f"{IGGRAPH}/{cuenta['ig_user_id']}/media",
                    {"fields": "id,caption,timestamp", "limit": cuantas,
                     "access_token": cuenta["token_ig"]}).get("data", [])
+    print(f"   {cuenta['usuario']}: {len(medios)} publicaciones")
 
     for m in medios:
         try:
@@ -189,6 +191,7 @@ def comentarios_facebook(cuenta, cuantas, horas, propios):
     posts = pedir(f"{FBGRAPH}/{pagina['page_id']}/posts",
                   {"fields": "id,message,created_time", "limit": cuantas,
                    "access_token": cuenta["token_fb"]}).get("data", [])
+    print(f"   {pagina['nombre']}: {len(posts)} publicaciones")
 
     for p in posts:
         try:
@@ -222,33 +225,49 @@ def comentarios_facebook(cuenta, cuantas, horas, propios):
 # Redaccion con Gemini
 # ---------------------------------------------------------------------------
 
-def armar_instrucciones(guion, whatsapp, sede):
-    reglas = "\n".join(f"- {r}" for r in guion["reglas"])
-    link = whatsapp[sede]
-    return f"""Sos quien atiende las redes de una clinica odontologica en Buenos Aires.
-Tenes que decidir si un comentario merece respuesta y, si la merece, escribirla.
+# En los comentarios de Instagram los links no son tocables: quedan como
+# texto muerto. En los privados de Instagram y en todo Facebook si andan.
+REGLA_INSTAGRAM = """=== DONDE VA EL LINK (IMPORTANTE) ===
 
-LA CLINICA
-{guion['quienes_somos']}
+Esto es un comentario de Instagram. En los comentarios de Instagram los links
+NO se pueden tocar: quedan como texto muerto y encima queda mal.
 
-QUE HACEMOS
-{guion['que_hacemos']}
+- En la respuesta publica NO pongas ningun link ni ninguna direccion web.
+  Contesta lo que se pueda e invitala a escribir por privado, o deci que le
+  escribis vos por privado. Escribilo natural, no siempre con las mismas
+  palabras.
+- En el mensaje privado SI va el link, completo y tal cual:
+  {link}"""
 
-LO PRACTICO
-{guion['lo_practico']}
+REGLA_FACEBOOK = """=== DONDE VA EL LINK ===
 
-REGLAS QUE NO SE ROMPEN
-{reglas}
+Esto es Facebook, donde los links si funcionan.
 
-TONO
-{guion['tono']}
+- En la respuesta publica pone el link completo y tal cual: {link}
+- En el mensaje privado tambien va el mismo link.
+- Nunca lo acortes ni lo adornes."""
 
-OBJETIVO
-{guion['objetivo']}
-El link que corresponde a este comentario es: {link}
+FORMATO = """
 
 Respondes SIEMPRE con un JSON, sin nada alrededor, con esta forma:
-{{"responder": true o false, "motivo": "en pocas palabras por que", "texto": "la respuesta publica, o cadena vacia si responder es false", "privado": "el mismo mensaje pero para mandarle por privado, un poco mas largo, con el link"}}"""
+{"responder": true o false, "motivo": "en pocas palabras por que", "texto": "la respuesta publica, o cadena vacia si responder es false", "privado": "el mensaje para mandarle por privado a esa misma persona, un poco mas largo que el publico"}"""
+
+
+def cargar_guion():
+    """El guion vive en instrucciones.txt para que se pueda editar sin tocar
+    codigo ni preocuparse por comas ni comillas."""
+    with open(ARCHIVO_GUION, encoding="utf-8") as f:
+        return f.read()
+
+
+def armar_instrucciones(guion, whatsapp, sede, red):
+    link = whatsapp[sede]
+    regla = (REGLA_INSTAGRAM if red == "instagram" else REGLA_FACEBOOK)
+    texto = guion.replace("{REGLA_DE_LINKS}", regla.format(link=link))
+    if "{REGLA_DE_LINKS}" in guion:
+        return texto + FORMATO
+    # Si alguien borro la marca del archivo, la agregamos igual al final.
+    return texto + "\n\n" + regla.format(link=link) + FORMATO
 
 
 def redactar(comentario, instrucciones, api_key):
@@ -328,6 +347,7 @@ def responder_privado(com, cuenta, texto):
 def main():
     print("== Bot de comentarios Dental Ciudad ==")
     cfg, cuentas = cargar_config()
+    guion = cargar_guion()
     estado = cargar_estado()
     ya = set(estado["contestados"])
 
@@ -413,8 +433,8 @@ def main():
         # --- redaccion
         sede = elegir_sede(texto + " " + com["publicacion"], cfg, cuenta)
         try:
-            r = redactar(com, armar_instrucciones(cfg["guion"], cfg["whatsapp"], sede),
-                         api_key)
+            r = redactar(com, armar_instrucciones(guion, cfg["whatsapp"], sede,
+                                                  com["red"]), api_key)
         except Exception as e:
             print(f"   FALLO redactando para {etiqueta}: {e}")
             errores += 1
@@ -431,8 +451,8 @@ def main():
         print(f"   {etiqueta} ({sede})")
         print(f"     dijo:      {texto[:160]}")
         print(f"     responde:  {r['texto']}")
-        if privado_activo and r["privado"]:
-            print(f"     privado:   {r['privado'][:200]}")
+        if r["privado"]:
+            print(f"     privado:   {r['privado'][:300]}")
 
         if prueba:
             hechos += 1
