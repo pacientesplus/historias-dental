@@ -38,6 +38,7 @@ ARCHIVO_HISTORIAL = RAIZ / "historial.json"
 CARPETA_TRABAJO = RAIZ / ".trabajo"
 
 GRAPH = "https://graph.instagram.com/v23.0"
+FBGRAPH = "https://graph.facebook.com/v23.0"
 DRIVE = "https://www.googleapis.com/drive/v3/files"
 TAG_RELEASE = "clips"
 
@@ -73,7 +74,21 @@ def cargar_config():
         if not token:
             print(f"   AVISO {cuenta['usuario']}: falta el secret {cuenta['token_secret']}")
             continue
-        activas.append({**cuenta, "token": token})
+
+        # La pagina de Facebook es opcional: si no esta cargado su token,
+        # esa cuenta publica solo en Instagram y el resto sigue igual.
+        pagina = None
+        fb = cuenta.get("pagina_fb")
+        if fb:
+            fb_token = os.environ.get(fb["token_secret"], "").strip()
+            if fb_token:
+                pagina = {"page_id": fb["page_id"], "token": fb_token,
+                          "nombre": fb.get("nombre", fb["page_id"])}
+            else:
+                print(f"   AVISO {cuenta['usuario']}: sin token de Facebook, "
+                      f"publica solo en Instagram")
+
+        activas.append({**cuenta, "token": token, "pagina": pagina})
 
     if not activas:
         raise SystemExit("No hay ninguna cuenta activa con token. Nada que hacer.")
@@ -244,6 +259,59 @@ def subir_asset(ruta):
     return f"https://github.com/{repo}/releases/download/{TAG_RELEASE}/{ruta.name}"
 
 
+def publicar_historia_facebook(pagina, ruta, url, es_video):
+    """Publica la misma pieza como historia en la pagina de Facebook.
+
+    Instagram no cruza las historias a Facebook cuando se publica por API
+    (esa casilla existe solo dentro de la app), asi que hay que mandarla
+    aparte. Devuelve el id de la historia publicada.
+    """
+    token = pagina["token"]
+    pid = pagina["page_id"]
+
+    if not es_video:
+        # Foto: se sube sin publicar y despues se convierte en historia.
+        r = requests.post(f"{FBGRAPH}/{pid}/photos",
+                          data={"url": url, "published": "false",
+                                "access_token": token}, timeout=120)
+        if not r.ok:
+            raise RuntimeError(f"no se pudo subir la foto: {r.text[:300]}")
+        foto_id = r.json()["id"]
+
+        r = requests.post(f"{FBGRAPH}/{pid}/photo_stories",
+                          data={"photo_id": foto_id, "access_token": token},
+                          timeout=120)
+        if not r.ok:
+            raise RuntimeError(f"no se pudo publicar la historia: {r.text[:300]}")
+        return r.json().get("post_id") or r.json().get("id")
+
+    # Video: son tres tiempos. Se abre la sesion, se sube el archivo y se cierra.
+    ruta = Path(ruta)
+    r = requests.post(f"{FBGRAPH}/{pid}/video_stories",
+                      data={"upload_phase": "start", "access_token": token},
+                      timeout=90)
+    if not r.ok:
+        raise RuntimeError(f"no se pudo iniciar la subida: {r.text[:300]}")
+    datos = r.json()
+    video_id, upload_url = datos["video_id"], datos["upload_url"]
+
+    with open(ruta, "rb") as f:
+        r = requests.post(upload_url,
+                          headers={"Authorization": f"OAuth {token}",
+                                   "offset": "0",
+                                   "file_size": str(ruta.stat().st_size)},
+                          data=f.read(), timeout=600)
+    if not r.ok:
+        raise RuntimeError(f"fallo la subida del video: {r.text[:300]}")
+
+    r = requests.post(f"{FBGRAPH}/{pid}/video_stories",
+                      data={"upload_phase": "finish", "video_id": video_id,
+                            "access_token": token}, timeout=120)
+    if not r.ok:
+        raise RuntimeError(f"no se pudo publicar la historia: {r.text[:300]}")
+    return r.json().get("post_id") or video_id
+
+
 def publicar_historia(cuenta, url, es_video):
     """Crea el contenedor, espera a que Instagram lo procese y lo publica."""
     datos = {"media_type": "STORIES", "access_token": cuenta["token"]}
@@ -372,11 +440,22 @@ def main():
         for cuenta in cuentas:
             try:
                 post_id = publicar_historia(cuenta, url, es_video)
-                print(f"   OK {cuenta['usuario']} -> {post_id}")
+                print(f"   OK  instagram {cuenta['usuario']} -> {post_id}")
                 publicadas.append(cuenta["usuario"])
             except Exception as e:
-                print(f"   FALLO {cuenta['usuario']}: {e}")
+                print(f"   FALLO instagram {cuenta['usuario']}: {e}")
                 hubo_error = True
+
+            # Facebook va aparte y no depende de que Instagram haya salido:
+            # si una falla, la otra igual se publica.
+            if cuenta.get("pagina"):
+                try:
+                    fb_id = publicar_historia_facebook(
+                        cuenta["pagina"], listo, url, es_video)
+                    print(f"   OK  facebook  {cuenta['pagina']['nombre']} -> {fb_id}")
+                except Exception as e:
+                    print(f"   FALLO facebook  {cuenta['pagina']['nombre']}: {e}")
+                    hubo_error = True
 
         if publicadas:
             ahora = datetime.now(timezone.utc).isoformat()
