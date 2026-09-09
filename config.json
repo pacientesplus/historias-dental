@@ -1,5 +1,7 @@
 {
-  "_nota": "Panel de control. Los tokens NO van aca, van en Settings > Secrets del repositorio.",
+  "_nota": "Panel de control. Las claves NO van aca, van en Settings > Secrets del repositorio.",
+
+  "carpeta_drive": "1At-V11fOOrHrg1qFJcoM-dpWzekJMakl",
 
   "min_por_dia": 1,
   "max_por_dia": 3,
