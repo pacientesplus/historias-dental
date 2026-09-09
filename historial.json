@@ -2,7 +2,8 @@
   "ultimo_uso": {
     "1ep78dqV-bjVuP5_enKPuCqnogzc3yCeY": "2026-09-09T01:45:34.180536+00:00",
     "10W9-2mwXZ2MkBrNFh9C5hg61uDxqT7MG": "2026-09-09T01:46:42.843299+00:00",
-    "1daZz6nZ_1YgWxdv1lj1uipPnmwRCb00-": "2026-09-09T01:47:26.211976+00:00"
+    "1daZz6nZ_1YgWxdv1lj1uipPnmwRCb00-": "2026-09-09T01:47:26.211976+00:00",
+    "1AXqGWQxfoPA8Pfgh-fwbq3ye7zcjEwz6": "2026-09-09T07:32:57.784574+00:00"
   },
   "publicaciones": [
     {
@@ -27,6 +28,16 @@
       "tipo": "video",
       "cuentas": [
         "dentalciudad1"
+      ]
+    },
+    {
+      "fecha": "2026-09-09T07:32:57.784574+00:00",
+      "archivo": "DraftResource_1774209627.678785.MOV",
+      "tipo": "video",
+      "cuentas": [
+        "dentalciudad1",
+        "dentalciudad",
+        "dentalmicrocentro"
       ]
     }
   ]
