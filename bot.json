@@ -2,7 +2,7 @@
   "_nota": "Panel de control del bot de comentarios. Las claves NO van aca, van en Settings > Secrets. Mientras 'modo_prueba' este en true, el bot NO publica nada: solo escribe en el registro lo que contestaria.",
   "modo_prueba": true,
   "responder_privado": false,
-  "horas_para_atras": 24,
+  "horas_para_atras": 720,
   "publicaciones_a_revisar": 12,
   "max_respuestas_por_corrida": 15,
   "whatsapp": {
