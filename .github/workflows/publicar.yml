@@ -42,6 +42,9 @@ jobs:
           IG_TOKEN_DENTALCIUDAD1: ${{ secrets.IG_TOKEN_DENTALCIUDAD1 }}
           IG_TOKEN_DENTALCIUDAD: ${{ secrets.IG_TOKEN_DENTALCIUDAD }}
           IG_TOKEN_DENTALMICROCENTRO: ${{ secrets.IG_TOKEN_DENTALMICROCENTRO }}
+          FB_TOKEN_DENTALCIUDAD1: ${{ secrets.FB_TOKEN_DENTALCIUDAD1 }}
+          FB_TOKEN_DENTALCIUDAD: ${{ secrets.FB_TOKEN_DENTALCIUDAD }}
+          FB_TOKEN_DENTALMICROCENTRO: ${{ secrets.FB_TOKEN_DENTALMICROCENTRO }}
         run: python publicar.py
 
       - name: Guardar el historial
