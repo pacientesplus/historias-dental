@@ -155,7 +155,7 @@ def comentarios_instagram(cuenta, cuantas, horas, propios):
     medios = pedir(f"{IGGRAPH}/{cuenta['ig_user_id']}/media",
                    {"fields": "id,caption,timestamp", "limit": cuantas,
                     "access_token": cuenta["token_ig"]}).get("data", [])
-    print(f"   {cuenta['usuario']}: {len(medios)} publicaciones")
+    crudos = nuestros = viejos = 0
 
     for m in medios:
         try:
@@ -167,12 +167,17 @@ def comentarios_instagram(cuenta, cuantas, horas, propios):
             print(f"   (no pude leer comentarios de {m['id']}: {e})")
             continue
 
+        crudos += len(coms)
         for c in coms:
             # Las tres cuentas se comentan entre ellas: ninguna se responde
             # a si misma ni a sus hermanas.
             if (c.get("username") or "").lower() in propios:
+                nuestros += 1
+                print(f"      (nuestro) @{c.get('username')}: "
+                      f"{(c.get('text') or '')[:70]}  [id {c['id']}]")
                 continue
             if not reciente(c.get("timestamp"), horas):
+                viejos += 1
                 continue
             salida.append({
                 "red": "instagram",
@@ -182,6 +187,10 @@ def comentarios_instagram(cuenta, cuantas, horas, propios):
                 "quien": c.get("username", "?"),
                 "publicacion": (m.get("caption") or "")[:300],
             })
+
+    print(f"   {cuenta['usuario']}: {len(medios)} publicaciones, "
+          f"{crudos} comentarios en total "
+          f"({nuestros} nuestros, {viejos} viejos, {len(salida)} utiles)")
     return salida
 
 
