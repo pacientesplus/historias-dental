@@ -2,7 +2,7 @@
   "_nota": "Ajustes del bot de comentarios. Las claves NO van aca, van en Settings > Secrets. El guion (lo que dice y lo que no) esta en instrucciones.txt, que se puede editar escribiendo normal. Mientras 'modo_prueba' este en true, el bot NO publica nada.",
   "modo_prueba": true,
   "responder_privado": true,
-  "horas_para_atras": 720,
+  "horas_para_atras": 26280,
   "publicaciones_a_revisar": 12,
   "max_respuestas_por_corrida": 15,
   "whatsapp": {
