@@ -1,5 +1,5 @@
 {
-  "_nota": "Panel de control. Las claves NO van aca, van en Settings > Secrets del repositorio. Una cuenta con activa:true pero sin su secret cargado se saltea sola, sin romper nada.",
+  "_nota": "Panel de control. Las claves NO van aca, van en Settings > Secrets. Una cuenta sin su secret cargado se saltea sola; si falta el token de Facebook, esa cuenta publica solo en Instagram.",
   "carpeta_drive": "1At-V11fOOrHrg1qFJcoM-dpWzekJMakl",
   "min_por_dia": 1,
   "max_por_dia": 1,
@@ -9,19 +9,34 @@
       "usuario": "dentalciudad1",
       "ig_user_id": "17841463863060415",
       "token_secret": "IG_TOKEN_DENTALCIUDAD1",
-      "activa": true
+      "activa": true,
+      "pagina_fb": {
+        "nombre": "Dental Ciudad 1",
+        "page_id": "424019744120344",
+        "token_secret": "FB_TOKEN_DENTALCIUDAD1"
+      }
     },
     {
       "usuario": "dentalciudad",
       "ig_user_id": "17841419529166454",
       "token_secret": "IG_TOKEN_DENTALCIUDAD",
-      "activa": true
+      "activa": true,
+      "pagina_fb": {
+        "nombre": "Dental Ciudad",
+        "page_id": "105450654210782",
+        "token_secret": "FB_TOKEN_DENTALCIUDAD"
+      }
     },
     {
       "usuario": "dentalmicrocentro",
       "ig_user_id": "17841472086607292",
       "token_secret": "IG_TOKEN_DENTALMICROCENTRO",
-      "activa": true
+      "activa": true,
+      "pagina_fb": {
+        "nombre": "Dental Microcentro",
+        "page_id": "646412561880316",
+        "token_secret": "FB_TOKEN_DENTALMICROCENTRO"
+      }
     }
   ]
 }
