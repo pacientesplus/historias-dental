@@ -1,0 +1,53 @@
+name: Responder comentarios
+
+# Por ahora se dispara solo a mano, mientras esta en modo prueba.
+# Cuando Eduardo apruebe las respuestas, le agregamos el horario automatico.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: responder-comentarios
+  cancel-in-progress: false
+
+jobs:
+  responder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: pip install --quiet requests
+
+      - name: Responder
+        env:
+          PYTHONUNBUFFERED: "1"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          IG_TOKEN_DENTALCIUDAD1: ${{ secrets.IG_TOKEN_DENTALCIUDAD1 }}
+          IG_TOKEN_DENTALCIUDAD: ${{ secrets.IG_TOKEN_DENTALCIUDAD }}
+          IG_TOKEN_DENTALMICROCENTRO: ${{ secrets.IG_TOKEN_DENTALMICROCENTRO }}
+          FB_TOKEN_DENTALCIUDAD1: ${{ secrets.FB_TOKEN_DENTALCIUDAD1 }}
+          FB_TOKEN_DENTALCIUDAD: ${{ secrets.FB_TOKEN_DENTALCIUDAD }}
+          FB_TOKEN_DENTALMICROCENTRO: ${{ secrets.FB_TOKEN_DENTALMICROCENTRO }}
+        run: python responder.py
+
+      - name: Guardar lo respondido
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain respondidos.json)" ]; then
+            git config user.name "Bot de comentarios"
+            git config user.email "actions@github.com"
+            git add respondidos.json
+            git commit -m "Comentarios respondidos"
+            git push
+          else
+            echo "Sin cambios."
+          fi
