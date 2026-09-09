@@ -1,12 +1,9 @@
 {
-  "_nota": "Panel de control. Las claves NO van aca, van en Settings > Secrets del repositorio.",
-
+  "_nota": "Panel de control. Las claves NO van aca, van en Settings > Secrets del repositorio. Una cuenta con activa:true pero sin su secret cargado se saltea sola, sin romper nada.",
   "carpeta_drive": "1At-V11fOOrHrg1qFJcoM-dpWzekJMakl",
-
   "min_por_dia": 1,
-  "max_por_dia": 3,
+  "max_por_dia": 1,
   "dias_de_descanso": 21,
-
   "cuentas": [
     {
       "usuario": "dentalciudad1",
@@ -18,13 +15,13 @@
       "usuario": "dentalciudad",
       "ig_user_id": "17841419529166454",
       "token_secret": "IG_TOKEN_DENTALCIUDAD",
-      "activa": false
+      "activa": true
     },
     {
       "usuario": "dentalmicrocentro",
       "ig_user_id": "17841472086607292",
       "token_secret": "IG_TOKEN_DENTALMICROCENTRO",
-      "activa": false
+      "activa": true
     }
   ]
 }
