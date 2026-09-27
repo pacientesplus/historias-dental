@@ -20,7 +20,8 @@
     "12cOzvL5gFMkuuAEy0pH3k9ebWCZcIfbp": "2026-09-23T11:17:23.573674+00:00",
     "1tmXZfVi8KaYyYLazZlJVLKRCsiF0iRfQ": "2026-09-24T11:16:33.754679+00:00",
     "1jAOS_AolZ3HWL8hKVcSsY15gnIVFv0CA": "2026-09-25T11:16:12.562050+00:00",
-    "1jWnXUSFqOXzpbECA1B-rTkqxBPe2xyIo": "2026-09-26T11:15:21.583828+00:00"
+    "1jWnXUSFqOXzpbECA1B-rTkqxBPe2xyIo": "2026-09-26T11:15:21.583828+00:00",
+    "1XFekb_M--LjFnPCNCo1D09Eziz4Xipbb": "2026-09-27T11:15:53.488724+00:00"
   },
   "publicaciones": [
     {
@@ -220,6 +221,16 @@
     {
       "fecha": "2026-09-26T11:15:21.583828+00:00",
       "archivo": "insta_video_5681.MP4",
+      "tipo": "video",
+      "cuentas": [
+        "dentalciudad1",
+        "dentalciudad",
+        "dentalmicrocentro"
+      ]
+    },
+    {
+      "fecha": "2026-09-27T11:15:53.488724+00:00",
+      "archivo": "Composite restoration for anterior teeth #dentist #shorts.MP4",
       "tipo": "video",
       "cuentas": [
         "dentalciudad1",
