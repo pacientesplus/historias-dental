@@ -25,7 +25,8 @@
     "1YLw5GKESCN83Is2DuqbSsQiwNWangk_H": "2026-09-28T11:17:59.437103+00:00",
     "1WLR_NtQ9vMQkuc6yyDb8QMR9E_afd6by": "2026-09-29T11:17:29.468599+00:00",
     "1VAiDzk8EHwO6M9jnv0VE6fYgeAccnFFK": "2026-09-30T11:17:03.420463+00:00",
-    "1gRg6bAVbcC9lPGIg6YjEizhk93CBdwb-": "2026-10-01T11:17:30.770773+00:00"
+    "1gRg6bAVbcC9lPGIg6YjEizhk93CBdwb-": "2026-10-01T11:17:30.770773+00:00",
+    "1cIJFyBVr3QzpUGKoVt2lZZFjyCLx2ce6": "2026-10-02T11:16:32.512778+00:00"
   },
   "publicaciones": [
     {
@@ -275,6 +276,16 @@
     {
       "fecha": "2026-10-01T11:17:30.770773+00:00",
       "archivo": "insta_video_37599.MP4",
+      "tipo": "video",
+      "cuentas": [
+        "dentalciudad1",
+        "dentalciudad",
+        "dentalmicrocentro"
+      ]
+    },
+    {
+      "fecha": "2026-10-02T11:16:32.512778+00:00",
+      "archivo": "Extracción de Muelas del Juicio (Animación 3D).MP4",
       "tipo": "video",
       "cuentas": [
         "dentalciudad1",
