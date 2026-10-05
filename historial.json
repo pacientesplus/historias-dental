@@ -28,7 +28,8 @@
     "1gRg6bAVbcC9lPGIg6YjEizhk93CBdwb-": "2026-10-01T11:17:30.770773+00:00",
     "1cIJFyBVr3QzpUGKoVt2lZZFjyCLx2ce6": "2026-10-02T11:16:32.512778+00:00",
     "19aReKwK5MvaPWIEE2UbyNYI2mjMVxJhj": "2026-10-03T13:21:29.770791+00:00",
-    "1-y1_1y6A3LnlDEAppyFnJp_umkxGdvr6": "2026-10-04T17:55:52.937012+00:00"
+    "1-y1_1y6A3LnlDEAppyFnJp_umkxGdvr6": "2026-10-04T17:55:52.937012+00:00",
+    "1QWsXxJnwnlMcWoHwNZL7StJZs2xPCQXy": "2026-10-05T11:18:27.845698+00:00"
   },
   "publicaciones": [
     {
@@ -308,6 +309,16 @@
     {
       "fecha": "2026-10-04T17:55:52.937012+00:00",
       "archivo": "insta_video_43721.mov",
+      "tipo": "video",
+      "cuentas": [
+        "dentalciudad1",
+        "dentalciudad",
+        "dentalmicrocentro"
+      ]
+    },
+    {
+      "fecha": "2026-10-05T11:18:27.845698+00:00",
+      "archivo": "Dental implant’s All on 4 in Prague #shorts #dentist #dental #implant #veneers #short.MP4",
       "tipo": "video",
       "cuentas": [
         "dentalciudad1",
