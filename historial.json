@@ -39,7 +39,8 @@
     "1iIQdTdDvjJyodmPVn3NiCZUhP56N8XVe": "2026-10-12T20:11:48.360948+00:00",
     "1GhA9ZeNPjpih_qhDN4hnvk0X75bKtR9W": "2026-10-13T18:03:55.062826+00:00",
     "1YOy6_g1ckPZis9UMzA1QsLJ97msh6p1V": "2026-10-14T15:45:43.574935+00:00",
-    "1mre1CaAWs7QVGapqw_LSV5zYEWOqXFT7": "2026-10-15T15:35:59.028040+00:00"
+    "1mre1CaAWs7QVGapqw_LSV5zYEWOqXFT7": "2026-10-15T15:35:59.028040+00:00",
+    "1r28byUJ-WVm2eBJCjZdVibZ4esGYJaEA": "2026-10-16T15:21:07.557976+00:00"
   },
   "publicaciones": [
     {
@@ -429,6 +430,16 @@
     {
       "fecha": "2026-10-15T15:35:59.028040+00:00",
       "archivo": "copy_F5A2A3F0-9C01-43C7-8969-22BC6333B0B3.MOV",
+      "tipo": "video",
+      "cuentas": [
+        "dentalciudad1",
+        "dentalciudad",
+        "dentalmicrocentro"
+      ]
+    },
+    {
+      "fecha": "2026-10-16T15:21:07.557976+00:00",
+      "archivo": "insta_video_44686.MP4",
       "tipo": "video",
       "cuentas": [
         "dentalciudad1",
